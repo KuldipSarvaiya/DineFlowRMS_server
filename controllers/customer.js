@@ -1,10 +1,9 @@
 import connection from "../db.js";
 
 export function show_customers(req, res) {
-  const q = "";
-  const values = [];
+  const q = "SELECT * FROM `customer`"; 
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       res.json(data);
     });

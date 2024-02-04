@@ -5,7 +5,7 @@ import {
   select_role,
   show_roles,
   update_role,
-} from "../controllers/role";
+} from "../controllers/role.js";
 
 const Role_R = new Router();
 

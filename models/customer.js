@@ -5,7 +5,7 @@ import {
   select_customer,
   show_customers,
   update_customer,
-} from "../controllers/customer";
+} from "../controllers/customer.js";
 
 const Customer_R = new Router();
 

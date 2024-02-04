@@ -5,7 +5,7 @@ import {
   select_contact_us,
   show_contact_uss,
   update_contact_us,
-} from "../controllers/contact_us";
+} from "../controllers/contact_us.js";
 
 const Contact_us_R = new Router();
 
