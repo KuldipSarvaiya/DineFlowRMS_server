@@ -52,7 +52,7 @@ export function create_booking(req, res) {
 
 export function update_booking(req, res) {
   const q =
-    "UPDATE `booking` SET `is_accepted`=?,`update_date`=?,`updated_by`=?,`updated_by_role`='?' WHERE `booking_id` = ?";
+    "UPDATE `booking` SET `is_accepted`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `booking_id` = ?";
   const values = [
     req.body.booking_state,
     new Date(),
@@ -72,7 +72,7 @@ export function update_booking(req, res) {
 export function delete_booking(req, res) {
   const q = "DELETE FROM `booking` WHERE `booking_id` = ?";
   try {
-    connection.query(q, req, body.id, (err, data) => {
+    connection.query(q, req.params.id, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       res.json(data);
     });

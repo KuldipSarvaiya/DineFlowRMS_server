@@ -2,10 +2,10 @@ import multer, { diskStorage } from "multer";
 
 const storage = diskStorage({
   destination: (req, file, cb) => {
-    cd(null, "./images");
+    cb(null, "./images");
   },
-  filename: (req, file, cd) => {
-    cd(
+  filename: (req, file, cb) => {
+    cb(
       null,
       `${file.fieldname}-${Date.now()}-${file.originalname.replace(" ", "-")}`
     );

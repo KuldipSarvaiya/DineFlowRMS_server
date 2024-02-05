@@ -1,10 +1,9 @@
 import connection from "../db.js";
 
 export function show_roles(req, res) {
-  const q = "";
-  const values = [];
+  const q = "SELECT * FROM `role`";
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       res.json(data);
     });
@@ -14,10 +13,9 @@ export function show_roles(req, res) {
 }
 
 export function select_role(req, res) {
-  const q = "";
-  const values = [];
+  const q = "SELECT * FROM `role` WHERE `role_id` = ?";
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, req.params.id, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       res.json(data);
     });
@@ -27,8 +25,8 @@ export function select_role(req, res) {
 }
 
 export function create_role(req, res) {
-  const q = "";
-  const values = [];
+  const q = "INSERT INTO `role`(`role_name`, `entry_date`) VALUES (?)";
+  const values = [req.body.role_name, new Date()];
   try {
     connection.query(q, values, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
@@ -40,8 +38,9 @@ export function create_role(req, res) {
 }
 
 export function update_role(req, res) {
-  const q = "";
-  const values = [];
+  const q =
+    "UPDATE `role` SET `role_name`=?, `update_date`=? WHERE `role_id` = ?";
+  const values = [req.body.role_name, new Date(), req.params.id];
   try {
     connection.query(q, values, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
@@ -53,10 +52,9 @@ export function update_role(req, res) {
 }
 
 export function delete_role(req, res) {
-  const q = "";
-  const values = [];
+  const q = "DELETE FROM `role` WHERE `role_id` = ?";
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, req.params.id, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       res.json(data);
     });
