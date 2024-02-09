@@ -6,7 +6,7 @@ import Contact_us_R from "./models/contact_us.js";
 import Customer_R from "./models/customer.js";
 import Employee_R from "./models/employee.js";
 import Feedback_R from "./models/feedback.js";
-import Menuitem_R from "./models/menuitrm.js";
+import Menuitem_R from "./models/menuitem.js";
 import Order_R from "./models/order.js";
 import Role_R from "./models/role.js";
 import Table_R from "./models/table.js";

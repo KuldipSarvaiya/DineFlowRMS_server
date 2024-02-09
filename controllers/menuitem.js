@@ -30,9 +30,9 @@ export function select_menuitem(req, res) {
 export function create_menuitem(req, res) {
   const q =
     "INSERT INTO `menuitem`(`image_url`, `category`, `price`, `item_name`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
+    console.log(req.file);
   const values = [
-    req.body.filename,
-    // req.file.filename,
+    req.file.filename,
     req.body.category,
     req.body.price,
     req.body.item_name,
@@ -55,8 +55,7 @@ export function update_menuitem(req, res) {
   const q =
     "UPDATE `menuitem` SET `image_url`=?,`category`=?,`price`=?,`item_name`=?, `update_date`=?, `updated_by`=?,`updated_by_role`=? WHERE `menuitem_id` = ?";
   const values = [
-    req.body.filename,
-    // req.file.filename,
+    req.file.filename || req.body.image_url,
     req.body.category,
     req.body.price,
     req.body.item_name,
