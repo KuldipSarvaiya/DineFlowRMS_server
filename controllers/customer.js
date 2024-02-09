@@ -5,7 +5,8 @@ export function show_customers(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -15,9 +16,10 @@ export function show_customers(req, res) {
 export function select_customer(req, res) {
   const q = "SELECT * FROM `customer` WHERE `customer_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -36,9 +38,10 @@ export function create_customer(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -58,9 +61,10 @@ export function update_customer(req, res) {
     req.params.id,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -70,9 +74,10 @@ export function update_customer(req, res) {
 export function delete_customer(req, res) {
   const q = "DELETE FROM `customer` WHERE `customer_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

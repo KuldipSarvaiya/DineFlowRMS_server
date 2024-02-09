@@ -5,7 +5,8 @@ export function show_tables(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -15,9 +16,10 @@ export function show_tables(req, res) {
 export function select_table(req, res) {
   const q = "SELECT * FROM `table` WHERE `table_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -35,9 +37,10 @@ export function create_table(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -56,9 +59,10 @@ export function update_table(req, res) {
     req.params.id,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -68,9 +72,10 @@ export function update_table(req, res) {
 export function delete_table(req, res) {
   const q = "DELETE FROM `table` WHERE `table_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q,[ req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

@@ -5,7 +5,8 @@ export function show_bookings(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -16,9 +17,10 @@ export function select_booking(req, res) {
   const q = "SELECT * FROM `booking` WHERE `booking_id` = ?";
   const values = [req.params.id];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -41,9 +43,10 @@ export function create_booking(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -62,7 +65,8 @@ export function update_booking(req, res) {
   try {
     connection.query(q, [...values, req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -72,9 +76,10 @@ export function update_booking(req, res) {
 export function delete_booking(req, res) {
   const q = "DELETE FROM `booking` WHERE `booking_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

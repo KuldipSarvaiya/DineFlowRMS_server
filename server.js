@@ -14,7 +14,7 @@ import Trn_order_R from "./models/trn_order.js";
 
 const App = express();
 
-App.use(cors({ origin: "*" })); // to allow domains to access api
+App.use(cors()); // to allow domains to access api
 App.use(express.json()); // to parse request body
 
 // database models routes
@@ -31,7 +31,7 @@ App.use("/table", Table_R);
 App.use("/trn_order", Trn_order_R);
 
 // Start an Express Server
-App.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, (err) => {
+App.listen(process.env.SERVER_PORT, (err) => {
   console.clear();
   err && console.warn(err);
   console.log("********DineFlow Server has started Running on http://localhost:8080 \n");

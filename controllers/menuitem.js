@@ -5,7 +5,8 @@ export function show_menuitems(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -16,9 +17,10 @@ export function select_menuitem(req, res) {
   const q = "SELECT * FROM `menuitem` WHERE `menuitem_id` = ?";
   const values = [];
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -29,7 +31,8 @@ export function create_menuitem(req, res) {
   const q =
     "INSERT INTO `menuitem`(`image_url`, `category`, `price`, `item_name`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
   const values = [
-    req.file.filename,
+    req.body.filename,
+    // req.file.filename,
     req.body.category,
     req.body.price,
     req.body.item_name,
@@ -38,9 +41,10 @@ export function create_menuitem(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -51,7 +55,8 @@ export function update_menuitem(req, res) {
   const q =
     "UPDATE `menuitem` SET `image_url`=?,`category`=?,`price`=?,`item_name`=?, `update_date`=?, `updated_by`=?,`updated_by_role`=? WHERE `menuitem_id` = ?";
   const values = [
-    req.file.filename,
+    req.body.filename,
+    // req.file.filename,
     req.body.category,
     req.body.price,
     req.body.item_name,
@@ -61,9 +66,10 @@ export function update_menuitem(req, res) {
     req.params.id,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -73,9 +79,10 @@ export function update_menuitem(req, res) {
 export function delete_menuitem(req, res) {
   const q = "DELETE FROM `menuitem` WHERE `menuitem_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

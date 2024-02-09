@@ -12,7 +12,7 @@ const Order_R = new Router();
 Order_R.get("/", show_orders);
 Order_R.get("/:id", select_order);
 Order_R.post("/", create_order);
-Order_R.put("/", update_order);
+Order_R.put("/:id", update_order);
 Order_R.delete("/:id", delete_order);
 
 export default Order_R;

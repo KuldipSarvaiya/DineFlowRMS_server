@@ -5,7 +5,8 @@ export function show_employees(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -15,9 +16,10 @@ export function show_employees(req, res) {
 export function select_employee(req, res) {
   const q = "SELECT * FROM `employee` WHERE `employee_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -39,9 +41,10 @@ export function create_employee(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -50,7 +53,7 @@ export function create_employee(req, res) {
 
 export function update_employee(req, res) {
   const q =
-    "UPDATE `employee` SET `name`=?,`doj`=?',`role_id`=?,`mobile`=?,`email_id`=?,`password`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `employee_id` = ?";
+    "UPDATE `employee` SET `name`=?,`doj`=?,`role_id`=?,`mobile`=?,`email_id`=?,`password`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `employee_id` = ?";
   const values = [
     req.body.name,
     req.body.doj,
@@ -61,12 +64,12 @@ export function update_employee(req, res) {
     new Date(),
     req.body.updated_by,
     req.body.updated_by_role,
-    req.params.id,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [...values, req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -76,9 +79,10 @@ export function update_employee(req, res) {
 export function delete_employee(req, res) {
   const q = "DELETE FROM `employee` WHERE `employee_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

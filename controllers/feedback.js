@@ -5,7 +5,8 @@ export function show_feedbacks(req, res) {
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -15,9 +16,10 @@ export function show_feedbacks(req, res) {
 export function select_feedback(req, res) {
   const q = "SELECT * FROM `feedback` WHERE `feedback_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q,[ req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -37,9 +39,10 @@ export function create_feedback(req, res) {
     req.body.entry_by_role,
   ];
   try {
-    connection.query(q, values, (err, data) => {
+    connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
@@ -47,32 +50,35 @@ export function create_feedback(req, res) {
 }
 
 // no need
-export function update_feedback(req, res) {
-  const q =
-    "UPDATE `feedback` SET  `feedback`=?,`customer_id`=?,`order_id`=?,`rating`=? WHERE `feedback_id` = ?";
-  const values = [
-    req.body.feedback,
-    req.body.customer_id,
-    req.body.order_id,
-    req.body.rating,
-    req.params.id,
-  ];
-  try {
-    connection.query(q, values, (err, data) => {
-      console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
-    });
-  } catch (error) {
-    res.json(error);
-  }
-}
+// export function update_feedback(req, res) {
+//   const q =
+//     "UPDATE `feedback` SET  `feedback`=?,`customer_id`=?,`order_id`=?,`rating`=? WHERE `feedback_id` = ?";
+//   const values = [
+//     req.body.feedback,
+//     req.body.customer_id,
+//     req.body.order_id,
+//     req.body.rating,
+//     req.params.id,
+//   ];
+//   try {
+//     connection.query(q, values, (err, data) => {
+//       console.log(err ?? `\n**********Data Sent = ${data}`);
+// if (err) res.status(500).json(err);
+// else
+//       res.json(data);
+//     });
+//   } catch (error) {
+//     res.json(error);
+//   }
+// }
 
 export function delete_feedback(req, res) {
   const q = "DELETE FROM `feedback` WHERE `feedback_id` = ?";
   try {
-    connection.query(q, req.params.id, (err, data) => {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      res.json(data);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);
