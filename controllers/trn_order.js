@@ -67,7 +67,7 @@ export function update_trn_order(req, res) {
     req.params.id,
   ];
   try {
-    connection.query(q, [values], (err, data) => {
+    connection.query(q, [...values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       if (err) res.status(500).json(err);
       else res.json(data);

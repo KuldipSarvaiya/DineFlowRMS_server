@@ -49,7 +49,7 @@ export function create_table(req, res) {
 
 export function update_table(req, res) {
   const q =
-    "UPDATE `table` SET `table_capacity`=?,`table_no`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `table_id` = ?";
+    "UPDATE `table` SET `table_capacity`=?,`table_no`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `table_id`=?";
   const values = [
     req.body.table_capacity,
     req.body.table_no,
@@ -59,7 +59,7 @@ export function update_table(req, res) {
     req.params.id,
   ];
   try {
-    connection.query(q, [values], (err, data) => {
+    connection.query(q, [...values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       if (err) res.status(500).json(err);
       else res.json(data);

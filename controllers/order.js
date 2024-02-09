@@ -68,7 +68,7 @@ export function update_order(req, res) {
     req.body.updated_by_role,
   ];
   try {
-    connection.query(q, [values], (err, data) => {
+    connection.query(q, [...values, req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       if (err) res.status(500).json(err);
       else res.json(data);
