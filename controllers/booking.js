@@ -29,7 +29,7 @@ export function select_booking(req, res) {
 
 export function create_booking(req, res) {
   const q =
-    "INSERT INTO `booking`(`table_id`, `customer_id`, `booking_date`, `booking_time`, `duration`, `is_accepted`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
+    "INSERT INTO `booking`(`table_id`, `customer_id`, `booking_date`, `booking_time`, `duration`, `is_accepted`,`person_count`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
 
   const values = [
     req.body.table_id,
@@ -38,6 +38,7 @@ export function create_booking(req, res) {
     req.body.booking_time,
     req.body.duration,
     "Pending",
+    req.body.person_count,
     new Date(),
     req.body.entry_by,
     req.body.entry_by_role,
@@ -55,9 +56,10 @@ export function create_booking(req, res) {
 
 export function update_booking(req, res) {
   const q =
-    "UPDATE `booking` SET `is_accepted`=?,`update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `booking_id` = ?";
+    "UPDATE `booking` SET `is_accepted`=?,`person_count`=?, `update_date`=?,`updated_by`=?,`updated_by_role`=? WHERE `booking_id` = ?";
   const values = [
     req.body.booking_state,
+    req.body.person_count,
     new Date(),
     req.body.updated_by,
     req.body.updated_by_role,
