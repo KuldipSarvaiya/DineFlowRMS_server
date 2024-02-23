@@ -1,7 +1,9 @@
 import connection from "../db.js";
 
 export function show_employees(req, res) {
-  const q = "SELECT * FROM `employee`";
+  const { role_id } = req.query;
+  const query = role_id ? " where  `role_id`=" + role_id + " " : "";
+  const q = "SELECT * FROM `employee`" + query;
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);

@@ -1,7 +1,7 @@
 import connection from "../db.js";
 
 export function show_feedbacks(req, res) {
-  const q = "SELECT * FROM `feedback`";
+  const q = "SELECT *, b.name FROM `feedback` a, `customer` b WHERE b.customer_id = a.customer_id";
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
