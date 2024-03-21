@@ -15,6 +15,25 @@ export function show_employees(req, res) {
   }
 }
 
+export function search_employee_signin(req, res) {
+  const q = "SELECT * FROM `employee` WHERE `mobile` = ? and `password` = ?";
+
+  try {
+    connection.query(
+      q,
+      [req.query.mobile_no, req.query.password],
+      (err, data) => {
+        console.log(err ?? `\n**********Data Sent = ${data}`);
+        if (err) res.status(500).json(err);
+        else res.json(data);
+      }
+    );
+  } catch (error) {
+    res.json(error);
+  }
+}
+
+
 export function select_employee(req, res) {
   const q = "SELECT * FROM `employee` WHERE `employee_id` = ?";
   try {

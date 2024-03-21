@@ -5,6 +5,7 @@ import {
   generate_bill,
   get_bill,
   select_order,
+  select_order_for_customer,
   show_orders,
   show_orders_today,
   update_order,
@@ -17,6 +18,7 @@ Order_R.get("/today", show_orders_today);
 Order_R.put("/generate_bill/:id", generate_bill);
 Order_R.get("/get_bill/:id", get_bill);
 Order_R.get("/:id", select_order);
+Order_R.get("/by_customer/:id", select_order_for_customer);
 Order_R.post("/", create_order);
 Order_R.put("/:id", update_order);
 Order_R.delete("/:id", delete_order);

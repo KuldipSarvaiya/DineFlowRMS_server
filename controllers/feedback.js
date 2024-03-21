@@ -41,7 +41,7 @@ export function create_feedback(req, res) {
   try {
     connection.query(q, [values], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
-      if (err) res.status(500).json(err);
+      if (err) res.json(err);
       else res.json(data);
     });
   } catch (error) {

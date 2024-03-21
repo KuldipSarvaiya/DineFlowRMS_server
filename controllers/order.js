@@ -43,7 +43,7 @@ export function show_orders_today(req, res) {
 
 export function generate_bill(req, res) {
   const q =
-    "SELECT a.*, b.image_url, b.item_name, b.category FROM trn_order a, menuitem b WHERE a.order_id = ? and a.menuitem_id = b.menuitem_id"// and a.entry_date = CURRENT_DATE";
+    "SELECT a.*, b.image_url, b.item_name, b.category FROM trn_order a, menuitem b WHERE a.order_id = ? and a.menuitem_id = b.menuitem_id"; // and a.entry_date = CURRENT_DATE";
 
   try {
     connection.query(q, [req.params.id], (err, data) => {
@@ -65,9 +65,9 @@ export function generate_bill(req, res) {
         [
           sub_total,
           req.body.discount,
-          true,
+          1,
           req.body.charges,
-          false,
+          0,
           +sub_total + +req.body.charges - +req.body.discount,
           req.body.updated_by,
           req.body.updated_by_role,
@@ -101,6 +101,20 @@ export function get_bill(req, res) {
         if (err) return res.status(500).json(err);
         res.json({ order: data2, trn_orders: data });
       });
+    });
+  } catch (error) {
+    res.json(error);
+  }
+}
+
+export function select_order_for_customer(req, res) {
+  const q =
+    "SELECT a.* FROM `orders` a, `booking` b WHERE a.customer_id = ? and b.booking_id = a. booking_id and b.booking_date = CURRENT_DATE";
+  try {
+    connection.query(q, [req.params.id], (err, data) => {
+      console.log(err ?? `\n**********Data Sent = ${data}`);
+      if (err) res.status(500).json(err);
+      else res.json(data);
     });
   } catch (error) {
     res.json(error);

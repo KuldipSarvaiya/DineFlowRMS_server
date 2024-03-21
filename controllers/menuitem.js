@@ -1,7 +1,9 @@
 import connection from "../db.js";
 
 export function show_menuitems(req, res) {
-  const q = "SELECT * FROM `menuitem`";
+  const { category } = req.query;
+  const query = category ? " where category= '" + category + "'" : "";
+  const q = "SELECT * FROM `menuitem`" + query;
   try {
     connection.query(q, (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
@@ -30,7 +32,7 @@ export function select_menuitem(req, res) {
 export function create_menuitem(req, res) {
   const q =
     "INSERT INTO `menuitem`(`image_url`, `category`, `price`, `item_name`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
-    console.log(req.file);
+  console.log(req.file);
   const values = [
     req.file.filename,
     req.body.category,

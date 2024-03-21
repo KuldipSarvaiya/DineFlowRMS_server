@@ -7,6 +7,7 @@ import {
   show_bookings,
   upcoming_bookings,
   update_booking,
+  get_my_bookings,
 } from "../controllers/booking.js";
 
 const Booking_R = new Router();
@@ -14,6 +15,7 @@ const Booking_R = new Router();
 Booking_R.get("/", show_bookings);
 Booking_R.get("/manage/upcoming", upcoming_bookings);
 Booking_R.get("/manage/pending", bookings_requests);
+Booking_R.get("/my_bookings/:id", get_my_bookings);
 Booking_R.get("/:id", select_booking);
 Booking_R.post("/", create_booking);
 Booking_R.put("/:id", update_booking);

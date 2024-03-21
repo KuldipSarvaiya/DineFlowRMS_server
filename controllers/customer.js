@@ -26,6 +26,24 @@ export function select_customer(req, res) {
   }
 }
 
+export function search_customer_signin(req, res) {
+  const q = "SELECT * FROM `customer` WHERE `mobile_no` = ? and `password` = ?";
+
+  try {
+    connection.query(
+      q,
+      [req.query.mobile_no, req.query.password],
+      (err, data) => {
+        console.log(err ?? `\n**********Data Sent = ${data}`);
+        if (err) res.status(500).json(err);
+        else res.json(data);
+      }
+    );
+  } catch (error) {
+    res.json(error);
+  }
+}
+
 export function create_customer(req, res) {
   const q =
     "INSERT INTO `customer`(`name`, `mobile_no`, `password`, `entry_date`, `entry_by`, `entry_by_role`) VALUES (?)";
@@ -39,9 +57,26 @@ export function create_customer(req, res) {
   ];
   try {
     connection.query(q, [values], (err, data) => {
-      console.log(err ?? `\n**********Data Sent = ${data}`);
-      if (err) res.status(500).json(err);
-      else res.json(data);
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        if (req.body.entry_by !== 0) return res.json(data);
+        // Retrieve the latest auto-increment ID
+        const lastInsertId = data.insertId;
+
+        // Update the entry_by field with the retrieved ID
+        connection.query(
+          "UPDATE `customer` SET entry_by = ? WHERE customer_id = ?",
+          [lastInsertId, lastInsertId],
+          (err, updateData) => {
+            if (err) {
+              res.status(500).json(err);
+            } else {
+              res.json(updateData);
+            }
+          }
+        );
+      }
     });
   } catch (error) {
     res.json(error);
