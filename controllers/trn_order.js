@@ -15,9 +15,9 @@ export function show_trn_orders(req, res) {
 
 export function get_pending_trn_orders(req, res) {
   const q =
-    "SELECT t.*,m.* FROM `trn_order` t, orders o, menuitem m WHERE t.order_id = o.order_id and t.menuitem_id = m.menuitem_id and o.is_complete = 0 and o.allow_orders = 1 and t.order_status = 'Pending'  ORDER BY t.entry_date";
+    "SELECT t.*,m.* FROM `trn_order` t, orders o, booking b, menuitem m WHERE t.order_id = o.order_id and t.menuitem_id = m.menuitem_id and o.is_complete = 0 and o.allow_orders = 1 and t.order_status <> 'Ready' and t.order_status <> 'Served' and b.booking_id = o.booking_id and b.table_id = ? ORDER BY t.entry_date";
   try {
-    connection.query(q, (err, data) => {
+    connection.query(q, [+req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       if (err) res.status(500).json(err);
       else res.json(data);

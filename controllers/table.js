@@ -13,6 +13,19 @@ export function show_tables(req, res) {
   }
 }
 
+export function show_busy_tables(req, res) {
+  const q = "SELECT t.* FROM `table` t, `booking` b, `orders` o where b.booking_id = o.booking_id and o.is_complete=0 and t.table_id = b.table_id and b.booking_date = CURRENT_DATE";
+  try {
+    connection.query(q, (err, data) => {
+      console.log(err ?? `\n**********Data Sent = ${data}`);
+      if (err) res.status(500).json(err);
+      else res.json(data);
+    });
+  } catch (error) {
+    res.json(error);
+  }
+}
+
 export function select_table(req, res) {
   const q = "SELECT * FROM `table` WHERE `table_id` = ?";
   try {

@@ -57,7 +57,31 @@ export function update_menuitem(req, res) {
   const q =
     "UPDATE `menuitem` SET `image_url`=?,`category`=?,`price`=?,`item_name`=?, `update_date`=?, `updated_by`=?,`updated_by_role`=? WHERE `menuitem_id` = ?";
   const values = [
-    req.file.filename || req.body.image_url,
+    req?.file?.filename || req.body.image_url,
+    req.body.category,
+    req.body.price,
+    req.body.item_name,
+    new Date(),
+    req.body.updated_by,
+    req.body.updated_by_role,
+    req.params.id,
+  ];
+  try {
+    connection.query(q, [...values], (err, data) => {
+      console.log(err ?? `\n**********Data Sent = ${data}`);
+      if (err) res.status(500).json(err);
+      else res.json(data);
+    });
+  } catch (error) {
+    res.json(error);
+  }
+}
+
+export function update_menuitem_noimage(req, res) {
+  console.log("\n\n***************without image", req.body);
+  const q =
+    "UPDATE `menuitem` SET `category`=?,`price`=?,`item_name`=?, `update_date`=?, `updated_by`=?,`updated_by_role`=? WHERE `menuitem_id` = ?";
+  const values = [
     req.body.category,
     req.body.price,
     req.body.item_name,

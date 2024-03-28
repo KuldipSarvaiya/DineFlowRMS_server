@@ -2,12 +2,19 @@ import connection from "../db.js";
 
 export function show_orders(req, res) {
   const { is_complete, date_from, date_to } = req.query;
-  const query1 = is_complete ? " and a.is_complete = " + !!is_complete : "";
+  console.log(is_complete, date_from, date_to);
+  const query1 = is_complete
+    ? " where orders.is_complete = " + !!is_complete
+    : "";
   const query2 =
-    date_from && date_to ? " and a.update_date BETWEEN ? AND ?" : "";
+    date_from && date_to
+      ? query1
+        ? " and orders.update_date BETWEEN ? AND ?"
+        : " where orders.update_date BETWEEN ? AND ?"
+      : "";
 
   const q =
-    "SELECT *, b.name FROM orders a INNER JOIN customer b WHERE b.customer_id = a.customer_id" +
+    "SELECT orders.*, customer.name, `table`.table_no FROM orders JOIN customer ON orders.customer_id = customer.customer_id JOIN booking ON orders.booking_id = booking.booking_id JOIN `table` ON booking.table_id = `table`.table_id " +
     query1 +
     query2;
 
@@ -28,10 +35,39 @@ export function show_orders(req, res) {
 
 export function show_orders_today(req, res) {
   const q =
-    "SELECT a.*, b.name FROM orders a, customer b, booking c WHERE b.customer_id = a.customer_id and c.booking_id = a.booking_id and is_complete=0 and c.booking_date = CURRENT_DATE";
+    "SELECT a.*, b.name, t.table_no FROM `orders` a, `customer` b, `booking` c, `table` t WHERE b.customer_id = a.customer_id and c.booking_id = a.booking_id and is_complete=0 and t.table_id = c.table_id and c.booking_date = CURRENT_DATE";
 
   try {
     connection.query(q, (err, data) => {
+      console.log(err ?? `\n**********Data Sent = ${data}`);
+      if (err) res.status(500).json(err);
+      else res.json(data);
+    });
+  } catch (error) {
+    res.json(error);
+  }
+}
+
+export function show_my_orders(req, res) {
+  const q =
+    "SELECT a.*, b.name, t.table_no FROM `orders` a, `customer` b, `booking` c, `table` t WHERE b.customer_id = a.customer_id and c.booking_id = a.booking_id and is_complete=1 and t.table_id = c.table_id and a.customer_id =?";
+
+  try {
+    connection.query(q, [req.params.id], (err, data) => {
+      console.log(err ?? `\n**********Data Sent = ${data}`);
+      if (err) res.status(500).json(err);
+      else res.json(data);
+    });
+  } catch (error) {
+    res.json(error);
+  }
+}
+export function show_my_current_orders(req, res) {
+  const q =
+    "SELECT o.* FROM `orders` o, `booking` b  WHERE  o.booking_id = b.booking_id and o.is_complete = 0 and b.booking_date = CURRENT_DATE and  o.customer_id =?";
+
+  try {
+    connection.query(q, [req.params.id], (err, data) => {
       console.log(err ?? `\n**********Data Sent = ${data}`);
       if (err) res.status(500).json(err);
       else res.json(data);
