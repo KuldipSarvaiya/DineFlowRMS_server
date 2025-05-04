@@ -40,7 +40,7 @@ export function search_customer_signin(req, res) {
       }
     );
   } catch (error) {
-    res.json(error);
+    res.status(500).json(error);
   }
 }
 
